@@ -1,31 +1,35 @@
-import { FlatList, ListRenderItemInfo, Text, View } from "react-native";
-import React, { useCallback } from "react";
-import { useHome } from "@hooks";
-import { Product } from "@api";
-import { HomeLayout, ProductCard } from "@components";
+import { FlatList, type ListRenderItemInfo } from 'react-native'
+import React, { useCallback } from 'react'
+import { useHome } from '@hooks'
+import { type Product } from '@api'
+import { HomeLayout, ProductCard } from '@components'
 
-import { styles } from "./styles";
-import { Loader } from "./Loader";
-import { HeaderComponent } from "./Header";
+import { styles } from './styles'
+import { Loader } from './Loader'
+import { HeaderComponent } from './Header'
 
-export function HomeScreen() {
-  const { isLoading, data,handleViewDetail } = useHome();
+export function HomeScreen (): JSX.Element {
+  const { isLoading, handleViewDetail, dataProductsMemo } = useHome()
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<Product>) => (
-      <ProductCard {...item} handleViewDetail={handleViewDetail} key={`product_card_${item.id}`} />
+      <ProductCard
+        {...item}
+        handleViewDetail={handleViewDetail}
+        key={`product_card_${item.id}`}
+      />
     ),
-    []
-  );
+    [handleViewDetail]
+  )
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader />
   }
 
   return (
     <HomeLayout>
       <FlatList<Product>
-        data={data?.products ?? []}
+        data={dataProductsMemo ?? []}
         ListHeaderComponent={HeaderComponent}
         renderItem={renderItem}
         keyExtractor={({ id }) => String(id)}
@@ -33,5 +37,5 @@ export function HomeScreen() {
         showsVerticalScrollIndicator={false}
       />
     </HomeLayout>
-  );
+  )
 }
