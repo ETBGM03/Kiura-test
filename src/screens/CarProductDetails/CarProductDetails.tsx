@@ -17,7 +17,7 @@ import numeral from 'numeral'
 import { styles } from './styles'
 
 export function CarProductDetails (): JSX.Element {
-  const { productsCard, totalToPaid, completeCheckOut } = useProductsStore()
+  const { productsCard, totalToPaid, completeCheckOut, setRemoveProductCar } = useProductsStore()
   const navigation = useNavigation()
 
   function handlePressAddFirst (): void {
@@ -32,6 +32,7 @@ export function CarProductDetails (): JSX.Element {
           handleAddToCar={undefined}
           isProductCar
           handleViewDetail={undefined}
+          handleRemoveProduct={setRemoveProductCar}
         />
       </View>
     ),
@@ -92,7 +93,7 @@ export function CarProductDetails (): JSX.Element {
         </View>
         <View style={styles.footer}>
           <View>
-            <Text>Total: {numeral(totalToPaid).format('$0,0')} USD</Text>
+            <Text style={{ fontSize: 18 }}>Total: {numeral(totalToPaid).format('$0,0')} USD</Text>
           </View>
           <Pressable
           onPress={completeCheckOut}

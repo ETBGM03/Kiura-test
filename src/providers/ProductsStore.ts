@@ -50,12 +50,7 @@ export const useProductsStore = create<ProductState>()((set) => ({
 
   setRemoveProductCar: (id) => {
     set((state) => {
-      const updatedProductsCard = state.productsCard.map(product => {
-        if (product.id === id) {
-          product.quantity -= 1
-        }
-        return product
-      }).filter(product => product.quantity > 0)
+      const updatedProductsCard = state.productsCard.filter(product => product.id !== id)
 
       const updatedTotalToPaid = calculateTotal(updatedProductsCard)
 

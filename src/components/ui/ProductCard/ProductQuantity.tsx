@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { useProductsStore } from 'src/providers/ProductsStore'
 import { type ProductQuantityProps } from './types'
+import numeral from 'numeral'
 
 export const ProductQuantity = ({
   quantity,
@@ -14,7 +15,7 @@ export const ProductQuantity = ({
   return (
     <View>
       <View>
-        <Text>$ {price}</Text>
+        <Text>{numeral(price).format('$0,0')}</Text>
       </View>
       <View style={styles.container}>
         <TouchableOpacity

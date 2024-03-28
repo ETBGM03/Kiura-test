@@ -17,7 +17,8 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
     category,
     handleViewDetail,
     handleAddToCar,
-    isProductCar = false
+    isProductCar = false,
+    handleRemoveProduct
   } = props
 
   const handlePress = (props: Product) => () => {
@@ -26,7 +27,9 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
   const handlePressAddCar = (props: Product) => () => {
     handleAddToCar?.(props)
   }
-
+  const handlePressRemoveProduct = (): void => {
+    handleRemoveProduct?.(props.id)
+  }
   return (
     <TouchableOpacity
       activeOpacity={0.5}
@@ -49,28 +52,44 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
         </Text>
 
         {isProductCar
-          ? <ProductQuantity quantity={props.quantity} productId={props.id} price={props.price * props.quantity} />
-          : <View style={{ flexDirection: 'row', columnGap: 6 }}>
-          <Text
-            style={{
-              color: '#fff',
-              fontWeight: '600',
-              backgroundColor: 'green',
-              alignSelf: 'flex-start',
-              borderRadius: 12,
-              paddingHorizontal: 6
-            }}
-            numberOfLines={2}
-          >
-            {category}
-          </Text>
-          <Text>{numeral(price).format('$0,0')}</Text>
-        </View>
-            }
+          ? (
+          <ProductQuantity
+            quantity={props.quantity}
+            productId={props.id}
+            price={props.price * props.quantity}
+          />
+            )
+          : (
+          <View style={{ flexDirection: 'row', columnGap: 6 }}>
+            <Text
+              style={{
+                color: '#fff',
+                fontWeight: '600',
+                backgroundColor: 'green',
+                alignSelf: 'flex-start',
+                borderRadius: 12,
+                paddingHorizontal: 6
+              }}
+              numberOfLines={2}
+            >
+              {category}
+            </Text>
+            <Text>{numeral(price).format('$0,0')}</Text>
+          </View>
+            )}
       </View>
 
       {isProductCar
-        ? <View />
+        ? (
+        <View style={{ marginVertical: 12 }}>
+          <Pressable
+            onPress={handlePressRemoveProduct}
+            style={{ width: 40, height: 30 }}
+          >
+            <AntDesign name="delete" size={24} color="red" />
+          </Pressable>
+        </View>
+          )
         : (
         <View
           style={{
