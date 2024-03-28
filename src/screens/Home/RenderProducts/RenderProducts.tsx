@@ -7,7 +7,8 @@ import { ProductCard } from '@components'
 
 export function RenderProducts ({
   products,
-  handleViewDetail
+  handleViewDetail,
+  handleAddToCar
 }: RenderProductProps): JSX.Element {
   const productsByCategories = organizeDataByCategory(products)
 
@@ -17,6 +18,7 @@ export function RenderProducts ({
           <ProductCard
             {...item}
             handleViewDetail={handleViewDetail}
+            handleAddToCar={handleAddToCar}
             key={`product_card_${item.id}`}
           />
         </View>
