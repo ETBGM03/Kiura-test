@@ -62,14 +62,7 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
           : (
           <View style={{ flexDirection: 'row', columnGap: 6 }}>
             <Text
-              style={{
-                color: '#fff',
-                fontWeight: '600',
-                backgroundColor: 'green',
-                alignSelf: 'flex-start',
-                borderRadius: 12,
-                paddingHorizontal: 6
-              }}
+              style={styles.textCategory}
               numberOfLines={2}
             >
               {category}
