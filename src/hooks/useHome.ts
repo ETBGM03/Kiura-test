@@ -15,7 +15,8 @@ export function useHome () {
 
   const rest = useQuery<{ products: Product[], total: number }>({
     queryKey: ['products'],
-    queryFn: async ({ signal }) => await queryAllProducts(signal)
+    queryFn: async ({ signal }) => await queryAllProducts(signal),
+    refetchOnReconnect: true
   })
 
   const handleViewDetail = useCallback((props: Product) => {
@@ -30,7 +31,10 @@ export function useHome () {
     return rest.data?.products
   }, [category, rest.data])
 
-  console.log('first', category)
+  // add function for get more products
+  async function getMoreProducts (): Promise<void> {
+    //
+  }
 
-  return { ...rest, handleViewDetail, dataProductsMemo }
+  return { ...rest, handleViewDetail, dataProductsMemo, getMoreProducts }
 }

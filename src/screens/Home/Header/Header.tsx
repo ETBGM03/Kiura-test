@@ -1,13 +1,22 @@
-import { View, Text, type ListRenderItemInfo, FlatList, TouchableOpacity } from 'react-native'
+import {
+  View,
+  Text,
+  type ListRenderItemInfo,
+  FlatList,
+  TouchableOpacity,
+  TextInput,
+  Pressable
+} from 'react-native'
 import React, { useCallback } from 'react'
-import { useHeader } from './useHeader'
 import { useProductsStore } from 'src/providers/ProductsStore'
+import { AntDesign } from '@expo/vector-icons'
 
-export function HeaderComponent (): JSX.Element {
-  const { data } = useHeader()
+export function HeaderComponent ({
+  categories
+}: {
+  categories: string[]
+}): JSX.Element {
   const { category, setCategory } = useProductsStore()
-
-  console.log({ category })
 
   const handleOnPress = (categoryParam: string) => () => {
     if (category === categoryParam) {
@@ -22,11 +31,11 @@ export function HeaderComponent (): JSX.Element {
   const renderItemCategory = useCallback(
     ({ item }: ListRenderItemInfo<string>) => (
       <TouchableOpacity
-      activeOpacity={0.5}
+        activeOpacity={0.5}
         style={{
           backgroundColor: category === item ? 'pink' : '#fff',
           borderRadius: 6,
-          maxHeight: 30,
+          maxHeight: 50,
           paddingVertical: 6,
           paddingHorizontal: 16
         }}
@@ -35,7 +44,7 @@ export function HeaderComponent (): JSX.Element {
         <Text
           style={{
             color: '#000',
-            fontWeight: '500',
+            fontWeight: '400',
             textTransform: 'capitalize',
             alignSelf: 'flex-start',
             borderRadius: 12
@@ -49,14 +58,41 @@ export function HeaderComponent (): JSX.Element {
   )
 
   return (
-    <View style={{ height: 100 }}>
-      <Text>Categories</Text>
-      <FlatList<string>
-        data={data ?? []}
-        renderItem={renderItemCategory}
-        horizontal
-        contentContainerStyle={{ columnGap: 20, alignSelf: 'center' }}
-      />
+    <View style={{ marginTop: 20 }}>
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          alignItems: 'center',
+          backgroundColor: '#fff',
+          borderRadius: 12
+        }}
+      >
+        <TextInput
+          style={{
+            height: 28,
+            flex: 1,
+            fontSize: 16,
+            marginVertical: 12,
+            backgroundColor: '#fff',
+            borderRadius: 12,
+            paddingHorizontal: 8
+          }}
+          placeholder="Search products"
+        />
+        <Pressable style={{ marginHorizontal: 12 }}>
+          <AntDesign name="search1" size={24} color="black" />
+        </Pressable>
+      </View>
+      <View style={{ marginVertical: 12, height: 80 }}>
+        <Text style={{ fontWeight: '500' }}>Categories</Text>
+        <FlatList<string>
+          data={categories ?? []}
+          renderItem={renderItemCategory}
+          horizontal
+          contentContainerStyle={{ columnGap: 20, alignSelf: 'center' }}
+        />
+      </View>
     </View>
   )
 }

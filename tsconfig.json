@@ -10,6 +10,7 @@
       "@screens": ["src/screens/index.ts"],
       "@hooks": ["src/hooks/index.ts"],
       "@api": ["src/api/index.ts"],
+      "@helpers": ["src/helpers/index.ts"],
       "@components": ["src/components/index.ts"],
     }
   }
