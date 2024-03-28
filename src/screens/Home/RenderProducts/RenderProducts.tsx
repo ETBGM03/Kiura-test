@@ -14,33 +14,40 @@ export function RenderProducts ({
 
   const renderItem = useCallback(
     ({ item }: ListRenderItemInfo<Product>) => (
-        <View style={{ marginRight: 12 }}>
-          <ProductCard
-            {...item}
-            handleViewDetail={handleViewDetail}
-            handleAddToCar={handleAddToCar}
-            key={`product_card_${item.id}`}
-          />
-        </View>
+      <ProductCard
+        {...item}
+        handleViewDetail={handleViewDetail}
+        handleAddToCar={handleAddToCar}
+        key={`product_card_${item.id}`}
+      />
     ),
     [handleViewDetail]
-
   )
 
   return (
-      <View>
-        {Object.keys(productsByCategories).map((category) => (
-          <View key={category} style={{ marginBottom: 20 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 8, textTransform: 'capitalize' }}>{category}</Text>
-            <FlatList
-              horizontal
-              data={productsByCategories[category] as any}
-              renderItem={renderItem}
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={(item) => item.id.toString()}
-            />
-          </View>
-        ))}
-      </View>
+    <View>
+      {Object.keys(productsByCategories).map((category) => (
+        <View key={category} style={{ marginBottom: 20 }}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              marginVertical: 8,
+              textTransform: 'capitalize'
+            }}
+          >
+            {category}
+          </Text>
+          <FlatList
+            horizontal
+            data={productsByCategories[category]}
+            ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+            renderItem={renderItem}
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item) => item.id.toString()}
+          />
+        </View>
+      ))}
+    </View>
   )
 }

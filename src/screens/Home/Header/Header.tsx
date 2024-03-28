@@ -16,7 +16,7 @@ import { type HeaderProps } from './types'
 import { styles } from './styles'
 
 export function HeaderComponent ({ categories }: HeaderProps): JSX.Element {
-  const { category, setCategory } = useProductsStore()
+  const { category, setCategory, setSearchQuery, searchQuery } = useProductsStore()
   const navigation =
     useNavigation<NavigationProp<AppStackNavigatorParamList>>()
 
@@ -57,7 +57,7 @@ export function HeaderComponent ({ categories }: HeaderProps): JSX.Element {
           <Pressable style={{ marginHorizontal: 6 }}>
             <AntDesign name="search1" size={24} color="black" />
           </Pressable>
-          <TextInput style={styles.inputSearch} placeholder="Search products" />
+          <TextInput onChangeText={setSearchQuery} defaultValue={searchQuery} style={styles.inputSearch} placeholder="Search products" />
         </View>
         <Pressable onPress={handlePressCarDetail} style={styles.shopping}>
           <AntDesign name="shoppingcart" size={24} color="black" />
