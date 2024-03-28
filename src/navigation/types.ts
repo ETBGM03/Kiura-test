@@ -1,22 +1,21 @@
-import { Product } from "@api";
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { type Product } from '@api'
+import { type NavigationProp, type RouteProp } from '@react-navigation/native'
 
 export enum ROUTES {
-  HOME = "HomeScreen",
-  PRODUCT_DETAIL = "ProductDetailScreen",
+  HOME = 'HomeScreen',
+  PRODUCT_DETAIL = 'ProductDetailScreen',
+  PRODUCT_CAR_DETAILS = 'PRODUCT_CAR_DETAILS'
 }
 
-export type NavigationProps = {
-  [ROUTES.HOME]: undefined;
-  [ROUTES.PRODUCT_DETAIL]: Product;
-};
+export type ParamListBase = Record<string, undefined | object>
 
-export type AppStackNavigatorParamList = {
-  [ROUTES.HOME]: undefined;
-  [ROUTES.PRODUCT_DETAIL]: Product;
-};
+export interface AppStackNavigatorParamList extends ParamListBase {
+  [ROUTES.HOME]: undefined
+  [ROUTES.PRODUCT_DETAIL]: Product
+  [ROUTES.PRODUCT_CAR_DETAILS]: undefined
+}
 
-export type AppStackScreenProps<T extends keyof AppStackNavigatorParamList> = {
-  navigation: NavigationProp<AppStackNavigatorParamList, T>;
-  route: RouteProp<AppStackNavigatorParamList, T>;
-};
+export interface AppStackScreenProps<T extends keyof AppStackNavigatorParamList> {
+  navigation: NavigationProp<AppStackNavigatorParamList, T>
+  route: RouteProp<AppStackNavigatorParamList, T>
+}

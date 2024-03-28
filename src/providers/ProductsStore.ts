@@ -5,48 +5,113 @@ import { create } from 'zustand'
 interface ProductState {
   category: string
   productsCard: Product[]
+  totalToPaid: number
   setAddNewProductCar: (values: Product) => void
   setRemoveProductCar: (idProducts: number) => void
-  totalToPaid: number
+  setDecreaseProductQuantity: (value: number) => void
+  setIncreaseProductQuantity: (value: number) => void
   setCategory: (category: string) => void
 }
-
 export const useProductsStore = create<ProductState>()((set) => ({
   category: '',
   productsCard: [],
   totalToPaid: 0,
+
   setAddNewProductCar: (newProduct) => {
     set((state) => {
-      const isProductAlreadyInCart = state.productsCard.some(product => product.id === newProduct.id)
+      const existingProductIndex = state.productsCard.findIndex(product => product.id === newProduct.id)
 
-      if (isProductAlreadyInCart) {
-        Toast.show('Product already exist!!', {
+      if (existingProductIndex !== -1) {
+        const updatedProductsCard = [...state.productsCard]
+        updatedProductsCard[existingProductIndex].quantity += 1
+
+        Toast.show(`Increased quantity of ${newProduct.title}!!`, {
           animation: true
         })
-        return state
-      }
 
-      const updatedProductsCard = [...state.productsCard, newProduct]
-      const updatedTotalToPaid = updatedProductsCard.reduce((total, product) => total + product.price, 0)
+        return {
+          ...state,
+          productsCard: updatedProductsCard,
+          totalToPaid: calculateTotal(updatedProductsCard)
+        }
+      } else {
+        const updatedProductsCard = [...state.productsCard, { ...newProduct, quantity: 1 }]
+
+        Toast.show(`Product ${newProduct.title} added!!`, {
+          animation: true
+        })
+
+        return {
+          ...state,
+          productsCard: updatedProductsCard,
+          totalToPaid: calculateTotal(updatedProductsCard)
+        }
+      }
+    })
+  },
+
+  setRemoveProductCar: (id) => {
+    set((state) => {
+      const updatedProductsCard = state.productsCard.map(product => {
+        if (product.id === id) {
+          product.quantity -= 1
+        }
+        return product
+      }).filter(product => product.quantity > 0)
+
+      const updatedTotalToPaid = calculateTotal(updatedProductsCard)
 
       return {
+        ...state,
         productsCard: updatedProductsCard,
         totalToPaid: updatedTotalToPaid
       }
     })
   },
-  setRemoveProductCar: (id) => {
+
+  setIncreaseProductQuantity: (id: number) => {
     set((state) => {
-      const newProductsCar = state.productsCard.filter((product) => product.id !== id)
-      const updatedTotalToPaid = newProductsCar.reduce((total, product) => total + product.price, 0)
+      const updatedProductsCard = state.productsCard.map(product => {
+        if (product.id === id) {
+          product.quantity += 1
+        }
+        return product
+      })
+
+      const updatedTotalToPaid = calculateTotal(updatedProductsCard)
 
       return {
-        productsCard: newProductsCar,
+        ...state,
+        productsCard: updatedProductsCard,
         totalToPaid: updatedTotalToPaid
       }
     })
   },
+
+  setDecreaseProductQuantity: (id: number) => {
+    set((state) => {
+      const updatedProductsCard = state.productsCard.map(product => {
+        if (product.id === id && product.quantity > 0) {
+          product.quantity -= 1
+        }
+        return product
+      }).filter(product => product.quantity > 0)
+
+      const updatedTotalToPaid = calculateTotal(updatedProductsCard)
+
+      return {
+        ...state,
+        productsCard: updatedProductsCard,
+        totalToPaid: updatedTotalToPaid
+      }
+    })
+  },
+
   setCategory: (category) => {
     set(() => ({ category }))
   }
 }))
+
+const calculateTotal = (productsCard: Product[]): number => {
+  return productsCard.reduce((total, product) => total + (product.price * (product.quantity ?? 1)), 0)
+}

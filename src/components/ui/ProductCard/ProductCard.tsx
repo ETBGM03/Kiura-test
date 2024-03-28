@@ -5,6 +5,7 @@ import { MaterialIcons, AntDesign } from '@expo/vector-icons'
 import { type ProductCardProps } from './types'
 import { styles } from './styles'
 import { type Product } from '@api'
+import { ProductQuantity } from './ProductQuantity'
 
 export function ProductCard (props: ProductCardProps): JSX.Element {
   const {
@@ -14,14 +15,15 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
     description,
     category,
     handleViewDetail,
-    handleAddToCar
+    handleAddToCar,
+    isProductCar = false
   } = props
 
   const handlePress = (props: Product) => () => {
-    handleViewDetail(props)
+    handleViewDetail?.(props)
   }
   const handlePressAddCar = (props: Product) => () => {
-    handleAddToCar(props)
+    handleAddToCar?.(props)
   }
 
   return (
@@ -43,7 +45,10 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
         <Text style={{ color: '#000' }} numberOfLines={2}>
           {description}
         </Text>
-        <View style={{ flexDirection: 'row', columnGap: 6 }}>
+
+        {isProductCar
+          ? <ProductQuantity quantity={props.quantity} productId={props.id} />
+          : <View style={{ flexDirection: 'row', columnGap: 6 }}>
           <Text
             style={{
               color: '#fff',
@@ -59,29 +64,34 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
           </Text>
           <Text>${price}</Text>
         </View>
+            }
       </View>
 
-      <View
-        style={{
-          justifyContent: 'space-between',
-          paddingTop: 12,
-          paddingBottom: 6
-        }}
-      >
-        <Pressable
-          style={{ width: 40, height: 30 }}
-          onPress={handlePressAddCar(props)}
+      {isProductCar
+        ? <View />
+        : (
+        <View
+          style={{
+            justifyContent: 'space-between',
+            paddingTop: 12,
+            paddingBottom: 6
+          }}
         >
-          <MaterialIcons name="add-shopping-cart" size={24} color="#898996" />
-        </Pressable>
+          <Pressable
+            style={{ width: 40, height: 30 }}
+            onPress={handlePressAddCar(props)}
+          >
+            <MaterialIcons name="add-shopping-cart" size={24} color="#898996" />
+          </Pressable>
 
-        <Pressable
-          style={{ width: 40, height: 30 }}
-          onPress={handlePress(props)}
-        >
-          <AntDesign name="arrowright" size={28} color="#898996" />
-        </Pressable>
-      </View>
+          <Pressable
+            style={{ width: 40, height: 30 }}
+            onPress={handlePress(props)}
+          >
+            <AntDesign name="arrowright" size={28} color="#898996" />
+          </Pressable>
+        </View>
+          )}
     </TouchableOpacity>
   )
 }

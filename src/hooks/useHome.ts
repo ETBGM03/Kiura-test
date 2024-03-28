@@ -1,7 +1,7 @@
 import { type Product, queryAllProducts } from '@api'
 import {
   ROUTES,
-  type NavigationProps as CustomNavigationProps
+  type AppStackNavigatorParamList
 } from '@navigation'
 import { type NavigationProp, useNavigation } from '@react-navigation/native'
 import { useQuery } from '@tanstack/react-query'
@@ -11,7 +11,7 @@ import { useProductsStore } from 'src/providers/ProductsStore'
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function useHome () {
   const { category } = useProductsStore()
-  const navigation = useNavigation<NavigationProp<CustomNavigationProps>>()
+  const navigation = useNavigation<NavigationProp<AppStackNavigatorParamList>>()
 
   const rest = useQuery<{ products: Product[], total: number }>({
     queryKey: ['products'],
@@ -28,7 +28,7 @@ export function useHome () {
       return rest.data?.products?.filter(product => product.category === category) ?? []
     }
 
-    return rest.data?.products
+    return rest.data?.products.map(product => ({ ...product, quantity: 0 }))
   }, [category, rest.data])
 
   // add function for get more products
