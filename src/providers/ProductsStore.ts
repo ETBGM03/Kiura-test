@@ -1,21 +1,8 @@
-import { type Product } from '@api'
 import Toast from 'react-native-root-toast'
 import { create } from 'zustand'
 import { calculateTotal } from './helpers'
+import { type ProductState } from './types'
 
-interface ProductState {
-  category: string
-  productsCard: Product[]
-  totalToPaid: number
-  searchQuery: string
-  setAddNewProductCar: (values: Product) => void
-  setRemoveProductCar: (idProducts: number) => void
-  setDecreaseProductQuantity: (value: number) => void
-  setIncreaseProductQuantity: (value: number) => void
-  setCategory: (searchQuery: string) => void
-  setSearchQuery: (category: string) => void
-  completeCheckOut: () => void
-}
 export const useProductsStore = create<ProductState>()((set) => ({
   category: '',
   productsCard: [],

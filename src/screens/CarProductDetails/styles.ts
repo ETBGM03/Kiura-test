@@ -18,5 +18,36 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: 2
+  },
+  textInfo: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '400'
+  },
+  contentCarEmpty: {
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    rowGap: 20
+  },
+  btnAddFirst: {
+    backgroundColor: '#b3cbe3',
+    borderRadius: 12,
+    width: '60%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  contentContainer: {
+    flexGrow: 1,
+    alignItems: 'center',
+    paddingBottom: 140
+  },
+  btnCheckOut: {
+    width: '70%',
+    backgroundColor: '#b3cbe3',
+    height: 50,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })

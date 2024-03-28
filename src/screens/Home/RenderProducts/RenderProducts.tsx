@@ -4,6 +4,7 @@ import { type ListRenderItemInfo, View, Text, FlatList } from 'react-native'
 import { type Product } from '@api'
 import React, { useCallback } from 'react'
 import { ProductCard } from '@components'
+import { styles } from './styles'
 
 export function RenderProducts ({
   products,
@@ -28,16 +29,7 @@ export function RenderProducts ({
     <View>
       {Object.keys(productsByCategories).map((category) => (
         <View key={category} style={{ marginBottom: 20 }}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              marginVertical: 8,
-              textTransform: 'capitalize'
-            }}
-          >
-            {category}
-          </Text>
+          <Text style={styles.textCategory}>{category}</Text>
           <FlatList
             horizontal
             data={productsByCategories[category]}

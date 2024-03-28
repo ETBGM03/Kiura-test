@@ -3,6 +3,7 @@ import React from 'react'
 import { type ProductDetailProps } from './types'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useProductsStore } from 'src/providers/ProductsStore'
+import { styles } from './style'
 
 export function ProductDetail (props: ProductDetailProps): JSX.Element {
   const { params } = props.route
@@ -11,45 +12,33 @@ export function ProductDetail (props: ProductDetailProps): JSX.Element {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+        <View style={styles.content}>
           <View>
-            <View style={{ width: '100%', height: 240 }}>
+            <View style={styles.contentImage}>
               <Image
                 source={{ uri: params.images[0] }}
-                style={{ width: '100%', height: '100%' }}
+                style={styles.image}
                 resizeMode="cover"
               />
             </View>
 
             <View style={{ paddingHorizontal: 16 }}>
-              <Text style={{ fontSize: 28, fontWeight: '400' }}>
-                {params.title}
-              </Text>
-              <Text style={{ fontSize: 16, fontWeight: '300' }}>
-                {params.description}
-              </Text>
+              <Text style={styles.title}>{params.title}</Text>
+              <Text style={styles.subtitle}>{params.description}</Text>
               <View style={{ flexDirection: 'row', columnGap: 8 }}>
-                <Text style={{ fontSize: 16, fontWeight: '300' }}>
-                  ${params.price}
-                </Text>
+                <Text style={styles.subtitle}>${params.price}</Text>
               </View>
             </View>
           </View>
 
-          <View style={{ alignItems: 'center', rowGap: 12, marginBottom: 12 }}>
+          <View style={styles.footer}>
             <TouchableOpacity
-            onPress={() => { setAddNewProductCar(params) }}
-              style={{
-                width: '90%',
-                height: 54,
-                justifyContent: 'center',
-                backgroundColor: '#b3cbe3',
-                borderRadius: 8
+              onPress={() => {
+                setAddNewProductCar(params)
               }}
+              style={styles.btnAddCar}
             >
-              <Text style={{ textAlign: 'center', fontSize: 16 }}>
-                Add to car
-              </Text>
+              <Text style={styles.textAddCar}>Add to car</Text>
             </TouchableOpacity>
           </View>
         </View>

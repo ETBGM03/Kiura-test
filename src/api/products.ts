@@ -15,11 +15,3 @@ export const queryProductsBySearch = async (signal: AbortSignal, searchQuery = '
     }
     return await res.json()
   })
-
-export const queryCategoriesProduct = async (signal: AbortSignal) =>
-  await fetch(`${URL}/products/categories`, { signal }).then(async res => {
-    if (!res.ok) {
-      throw new Error('Failed to fetch')
-    }
-    return await res.json()
-  })
