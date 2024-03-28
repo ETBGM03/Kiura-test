@@ -6,6 +6,7 @@ import { type ProductCardProps } from './types'
 import { styles } from './styles'
 import { type Product } from '@api'
 import { ProductQuantity } from './ProductQuantity'
+import numeral from 'numeral'
 
 export function ProductCard (props: ProductCardProps): JSX.Element {
   const {
@@ -32,6 +33,7 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
       onPress={handlePress(props)}
       style={styles.container}
       accessible={false}
+      disabled={isProductCar}
     >
       <View style={styles.contentImage}>
         <Image
@@ -47,7 +49,7 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
         </Text>
 
         {isProductCar
-          ? <ProductQuantity quantity={props.quantity} productId={props.id} />
+          ? <ProductQuantity quantity={props.quantity} productId={props.id} price={props.price * props.quantity} />
           : <View style={{ flexDirection: 'row', columnGap: 6 }}>
           <Text
             style={{
@@ -62,7 +64,7 @@ export function ProductCard (props: ProductCardProps): JSX.Element {
           >
             {category}
           </Text>
-          <Text>${price}</Text>
+          <Text>{numeral(price).format('$0,0')}</Text>
         </View>
             }
       </View>

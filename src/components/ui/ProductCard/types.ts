@@ -5,3 +5,9 @@ export interface ProductCardProps extends Product {
   handleAddToCar?: (product: Product) => void
   isProductCar?: boolean
 }
+
+export interface ProductQuantityProps {
+  quantity: number
+  productId: number
+  price: number
+}

@@ -1,6 +1,7 @@
 import { type Product } from '@api'
 import Toast from 'react-native-root-toast'
 import { create } from 'zustand'
+import { calculateTotal } from './helpers'
 
 interface ProductState {
   category: string
@@ -11,6 +12,7 @@ interface ProductState {
   setDecreaseProductQuantity: (value: number) => void
   setIncreaseProductQuantity: (value: number) => void
   setCategory: (category: string) => void
+  completeCheckOut: () => void
 }
 export const useProductsStore = create<ProductState>()((set) => ({
   category: '',
@@ -19,33 +21,25 @@ export const useProductsStore = create<ProductState>()((set) => ({
 
   setAddNewProductCar: (newProduct) => {
     set((state) => {
-      const existingProductIndex = state.productsCard.findIndex(product => product.id === newProduct.id)
+      const isProductInCart = state.productsCard.some(product => product.id === newProduct.id)
 
-      if (existingProductIndex !== -1) {
-        const updatedProductsCard = [...state.productsCard]
-        updatedProductsCard[existingProductIndex].quantity += 1
-
-        Toast.show(`Increased quantity of ${newProduct.title}!!`, {
+      if (isProductInCart) {
+        Toast.show(`Product ${newProduct.title} is already in the cart.`, {
           animation: true
         })
+        return state
+      }
 
-        return {
-          ...state,
-          productsCard: updatedProductsCard,
-          totalToPaid: calculateTotal(updatedProductsCard)
-        }
-      } else {
-        const updatedProductsCard = [...state.productsCard, { ...newProduct, quantity: 1 }]
+      const updatedProductsCard = [...state.productsCard, { ...newProduct, quantity: 1 }]
 
-        Toast.show(`Product ${newProduct.title} added!!`, {
-          animation: true
-        })
+      Toast.show(`Product ${newProduct.title} added to cart.`, {
+        animation: true
+      })
 
-        return {
-          ...state,
-          productsCard: updatedProductsCard,
-          totalToPaid: calculateTotal(updatedProductsCard)
-        }
+      return {
+        ...state,
+        productsCard: updatedProductsCard,
+        totalToPaid: calculateTotal(updatedProductsCard)
       }
     })
   },
@@ -109,9 +103,19 @@ export const useProductsStore = create<ProductState>()((set) => ({
 
   setCategory: (category) => {
     set(() => ({ category }))
+  },
+
+  completeCheckOut: () => {
+    set((state) => {
+      Toast.show('Your purchase has been completed successfully. Thank you for shopping with us!', {
+        animation: true
+      })
+
+      return {
+        ...state,
+        productsCard: [],
+        totalToPaid: 0
+      }
+    })
   }
 }))
-
-const calculateTotal = (productsCard: Product[]): number => {
-  return productsCard.reduce((total, product) => total + (product.price * (product.quantity ?? 1)), 0)
-}

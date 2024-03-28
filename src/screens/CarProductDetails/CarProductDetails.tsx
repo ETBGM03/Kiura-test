@@ -12,10 +12,12 @@ import { useProductsStore } from 'src/providers/ProductsStore'
 import { useNavigation } from '@react-navigation/native'
 import { ProductCard } from '@components'
 import { type Product } from '@api'
+import numeral from 'numeral'
+
 import { styles } from './styles'
 
 export function CarProductDetails (): JSX.Element {
-  const { productsCard } = useProductsStore()
+  const { productsCard, totalToPaid, completeCheckOut } = useProductsStore()
   const navigation = useNavigation()
 
   function handlePressAddFirst (): void {
@@ -55,7 +57,7 @@ export function CarProductDetails (): JSX.Element {
               <Text
                 style={{
                   textAlign: 'center',
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: '400'
                 }}
               >
@@ -72,7 +74,7 @@ export function CarProductDetails (): JSX.Element {
                   alignItems: 'center'
                 }}
               >
-                <Text style={{ fontSize: 18, color: 'white' }}>Add first</Text>
+                <Text style={{ fontSize: 16, color: 'white' }}>Add first</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -90,10 +92,20 @@ export function CarProductDetails (): JSX.Element {
         </View>
         <View style={styles.footer}>
           <View>
-            <Text>Product List: {productsCard.length}</Text>
+            <Text>Total: {numeral(totalToPaid).format('$0,0')} USD</Text>
           </View>
-          <Pressable>
-            <Text>Complete order</Text>
+          <Pressable
+          onPress={completeCheckOut}
+            disabled={(Number.isNaN(totalToPaid)) || (productsCard.length === 0)}
+          style={{
+            width: '70%',
+            backgroundColor: '#b3cbe3',
+            height: 50,
+            borderRadius: 12,
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Text style={{ fontSize: 18, fontWeight: '600', color: '#fff' }}>Complete order</Text>
           </Pressable>
         </View>
       </View>

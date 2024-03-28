@@ -7,5 +7,7 @@ export const styles = StyleSheet.create({
   },
   containerLoader: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent:'center'
   },
 });

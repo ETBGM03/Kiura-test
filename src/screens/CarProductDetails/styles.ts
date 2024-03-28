@@ -14,6 +14,9 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 6
+    elevation: 6,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 2
   }
 })
